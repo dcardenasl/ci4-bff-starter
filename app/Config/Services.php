@@ -31,6 +31,15 @@ class Services extends BaseService
         );
     }
 
+    public static function healthChecker(bool $getShared = true): \dcardenasl\Ci4ApiCore\Monitoring\HealthChecker
+    {
+        if ($getShared) {
+            return static::getSharedInstance('healthChecker');
+        }
+
+        return new \dcardenasl\Ci4ApiCore\Monitoring\HealthChecker();
+    }
+
     /**
      * The Request Service
      *
