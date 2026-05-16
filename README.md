@@ -1,69 +1,98 @@
-# CodeIgniter 4 Application Starter
+# ci4-bff-starter
 
-## What is CodeIgniter?
+[![CI4](https://img.shields.io/badge/CodeIgniter-4.5-EF4223)](https://codeigniter.com/)
+[![PHP](https://img.shields.io/badge/PHP-8.2%2B-777BB4)](https://www.php.net/)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%208-2563EB)](phpstan.neon)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+CodeIgniter 4 **Backend-for-Frontend** starter — a stateless HTTP gateway
+that fronts a `ci4-api-starter` hub and one or more `ci4-domain-starter`
+apps for decoupled clients (SPAs, mobile).
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## Role
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+```
+SPA / Mobile  ──▶  ci4-bff-starter (:8088)
+                        ├─▶  hub (ci4-api-starter :8080)
+                        └─▶  domain (ci4-domain-starter :8090)
+```
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+The BFF:
 
-## Installation & updates
+- **Forwards** the client's `Authorization: Bearer <jwt>` header as-is to
+  the hub and/or domain — it never validates JWTs itself.
+- Provides **CORS multi-origin** support via `BFF_ALLOWED_ORIGINS`.
+- Exposes **health endpoints** (`/ping`, `/health`, `/ready`, `/live`).
+- Holds **no database**, **no user store**, **no permission model** of its
+  own.
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+## What it is not
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+- It is **not** an auth server — the hub issues JWTs and validates them.
+- It is **not** a domain backend — business logic lives in
+  `ci4-domain-starter`.
+- It is **not** an admin UI — that's `ci4-admin-starter`.
 
-## Setup
+## Architecture cheat sheet
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+```
+Controller  →  HubClient  →  upstream HTTP call
+              (service token cache, optional)
+```
 
-## Important Change with index.php
+- `App\Libraries\Hub\HubClient` — single egress point. Holds the cached
+  service token (renewed `Config\Hub::$serviceTokenSafetyMargin` seconds
+  before expiry).
+- `Config\Bff` — `hubUrl`, `domainUrl`, parsed `allowedOrigins`. Throws on
+  empty origins in production.
+- `Config\Cors` — wraps `Config\Bff::$allowedOrigins`.
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+All other infrastructure (base controllers, CORS filter, security
+headers, locale, feature toggles) comes from the
+[`dcardenasl/ci4-api-core`](https://packagist.org/packages/dcardenasl/ci4-api-core)
+package — same as the hub and domain starters.
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+## Quick start
 
-**Please** read the user guide for a better explanation of how CI4 works!
+```bash
+composer install
+cp .env.example .env
+# Edit .env: set bff.hubUrl, bff.domainUrl, BFF_ALLOWED_ORIGINS.
 
-## Repository Management
+php spark serve --port 8088
+curl http://localhost:8088/ping
+```
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+For a fully orchestrated multi-repo project, use
+[`ci4-kickstart`](https://github.com/dcardenasl/ci4-kickstart) with the
+`CI4_INCLUDE_BFF=y` flag.
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+## Required environment variables
 
-## Server Requirements
+| Variable | Purpose |
+|---|---|
+| `bff.hubUrl` | Base URL of the upstream hub |
+| `bff.domainUrl` | Base URL of the upstream domain app (optional) |
+| `BFF_ALLOWED_ORIGINS` | Comma-separated list of permitted CORS origins |
+| `encryption.key` | CI4 encryption key (32 bytes after `hex2bin:` decode) |
+| `hub.appCode` / `hub.apiKey` | Only required if the BFF makes M2M calls to the hub |
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+## Adding a proxy endpoint
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+Create a routes file under `app/Config/Routes/v1/*.php` and a thin
+controller under `app/Controllers/Api/V1/` that uses `HubClient` (or
+`Services::curlrequest()`) to call upstream. Pass the client's
+`Authorization` header through; the hub/domain will return 401 if the
+token is invalid.
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+## Quality
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+```bash
+composer quality   # PHPStan L8 + CS-Fixer dry-run + PHPUnit
+composer cs-fix    # auto-fix code style
+composer test      # PHPUnit only
+```
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+## License
+
+MIT — see [LICENSE](LICENSE).
