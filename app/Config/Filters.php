@@ -77,12 +77,17 @@ class Filters extends BaseFilters
             'locale',
             'cors',
             'invalidchars',
+            // BFF-105: throttle every request by default. Orchestrator probes
+            // (`/ping`, `/live`, `/ready`) are exempt — they fire every few
+            // seconds and would otherwise self-exhaust the IP bucket.
+            'throttle' => ['except' => ['ping', 'live', 'ready']],
         ],
         'after' => [
             'cors',
             'secureheaders',
             'deprecationheaders',
             'correlationid',
+            'throttle' => ['except' => ['ping', 'live', 'ready']],
         ],
     ];
 
