@@ -48,6 +48,14 @@ class Hub extends BaseConfig
      */
     public int $httpTimeout = 5;
 
+    /**
+     * Hub endpoint paths. Override here to point at a different hub API version
+     * without forking the HubClient.
+     */
+    public string $introspectPath   = '/api/v1/auth/introspect';
+    public string $serviceTokenPath = '/api/v1/auth/service-token';
+    public string $permissionsPath  = '/api/v1/iam/permissions';
+
     public function __construct()
     {
         parent::__construct();
