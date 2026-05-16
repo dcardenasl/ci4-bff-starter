@@ -51,6 +51,7 @@
         "cs-fix": "php-cs-fixer fix",
         "cs-check": "php-cs-fixer fix --dry-run --diff --sequential",
         "arch-drift": "phpunit tests/Unit/Architecture --configuration=phpunit.xml --no-coverage --testdox",
+        "swagger:generate": "php spark swagger:generate",
         "quality": [
             "@cs-check",
             "@phpstan",

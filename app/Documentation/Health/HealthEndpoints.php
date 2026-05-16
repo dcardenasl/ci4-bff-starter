@@ -8,17 +8,22 @@ use OpenApi\Attributes as OA;
 
 #[OA\Get(
     path: '/health',
-    tags: ['Health'],
-    summary: 'Health check',
+    tags: ['System'],
+    summary: 'Overall health check',
+    description: 'Aggregates the hub probe with local disk/writable checks. Returns 503 when any check is unhealthy.',
     responses: [
         new OA\Response(
             response: 200,
-            description: 'System healthy',
+            description: 'System healthy or degraded',
             content: new OA\JsonContent(
                 properties: [
                     new OA\Property(property: 'status', type: 'string', example: 'healthy'),
                     new OA\Property(property: 'timestamp', type: 'string'),
-                    new OA\Property(property: 'checks', type: 'object'),
+                    new OA\Property(property: 'checks', type: 'object', properties: [
+                        new OA\Property(property: 'hub', type: 'object'),
+                        new OA\Property(property: 'disk', type: 'object'),
+                        new OA\Property(property: 'writable', type: 'object'),
+                    ]),
                 ],
                 type: 'object'
             )
@@ -28,8 +33,9 @@ use OpenApi\Attributes as OA;
 )]
 #[OA\Get(
     path: '/ping',
-    tags: ['Health'],
+    tags: ['System'],
     summary: 'Ping',
+    description: 'Lightweight availability check. Does not probe upstreams; safe to call as often as needed (excluded from rate-limit).',
     responses: [
         new OA\Response(
             response: 200,
@@ -46,28 +52,35 @@ use OpenApi\Attributes as OA;
 )]
 #[OA\Get(
     path: '/ready',
-    tags: ['Health'],
+    tags: ['System'],
     summary: 'Readiness check',
+    description: 'Returns 200 when the BFF can reach the upstream hub (`GET {hubUrl}/ping`). The BFF has no database, so readiness is a function of hub reachability only.',
     responses: [
         new OA\Response(
             response: 200,
-            description: 'Ready to serve',
+            description: 'Ready to serve traffic',
             content: new OA\JsonContent(
                 properties: [
                     new OA\Property(property: 'status', type: 'string', example: 'ready'),
                     new OA\Property(property: 'timestamp', type: 'string'),
-                    new OA\Property(property: 'database', type: 'object'),
+                    new OA\Property(property: 'hub', type: 'object', properties: [
+                        new OA\Property(property: 'status', type: 'string', example: 'healthy'),
+                        new OA\Property(property: 'response_time_ms', type: 'number'),
+                        new OA\Property(property: 'hub_url', type: 'string'),
+                        new OA\Property(property: 'hub_status_code', type: 'integer'),
+                    ]),
                 ],
                 type: 'object'
             )
         ),
-        new OA\Response(response: 503, description: 'Not ready'),
+        new OA\Response(response: 503, description: 'Hub unreachable or returned non-2xx'),
     ]
 )]
 #[OA\Get(
     path: '/live',
-    tags: ['Health'],
+    tags: ['System'],
     summary: 'Liveness check',
+    description: 'Returns alive + uptime regardless of upstream state. Use to detect a stuck process; not a substitute for readiness.',
     responses: [
         new OA\Response(
             response: 200,

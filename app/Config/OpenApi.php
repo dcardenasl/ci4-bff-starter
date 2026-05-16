@@ -4,6 +4,16 @@ namespace App\Config;
 
 use OpenApi\Attributes as OA;
 
+/**
+ * BFF OpenAPI surface.
+ *
+ * The BFF is forward-only by default. Clients authenticate using a `Bearer`
+ * JWT issued by the upstream hub (ci4-api-starter) — the BFF never issues
+ * tokens, so the security scheme below documents the wire format only.
+ *
+ * Tags map to the BFF's own controllers: System (health/ping/live/ready),
+ * Users (proxy example, BFF-103), Me (introspect-auth aggregator, BFF-106).
+ */
 #[OA\OpenApi(
     openapi: '3.0.0',
 )]
@@ -13,46 +23,27 @@ use OpenApi\Attributes as OA;
     description: \Config\Project::DESCRIPTION,
 )]
 #[OA\Server(
-    url: 'http://localhost:8080',
-    description: 'Local development server'
+    url: 'http://localhost:8088',
+    description: 'Local development server (BFF)'
 )]
 #[OA\SecurityScheme(
     securityScheme: 'bearerAuth',
     type: 'http',
     scheme: 'bearer',
     bearerFormat: 'JWT',
-    description: 'Enter your JWT token in the format: Bearer {token}'
-)]
-#[OA\SecurityScheme(
-    securityScheme: 'appKeyAuth',
-    type: 'apiKey',
-    name: 'X-App-Key',
-    in: 'header',
-    description: 'Per-application API key issued by this server, used to authenticate the calling app (no user JWT required).'
+    description: 'JWT issued by the upstream hub. The BFF forwards it verbatim on every call.'
 )]
 #[OA\Tag(
-    name: 'Authentication',
-    description: 'User authentication endpoints'
+    name: 'System',
+    description: 'Health and readiness endpoints'
 )]
 #[OA\Tag(
     name: 'Users',
-    description: 'User management endpoints'
+    description: 'Proxy endpoints to the hub\'s `/api/v1/users` resource'
 )]
 #[OA\Tag(
-    name: 'Files',
-    description: 'File management endpoints'
-)]
-#[OA\Tag(
-    name: 'Metrics',
-    description: 'Operational metrics endpoints'
-)]
-#[OA\Tag(
-    name: 'Audit',
-    description: 'Audit log endpoints'
-)]
-#[OA\Tag(
-    name: 'Health',
-    description: 'Health and readiness endpoints'
+    name: 'Me',
+    description: 'Aggregator endpoints scoped to the authenticated user'
 )]
 class OpenApi
 {
