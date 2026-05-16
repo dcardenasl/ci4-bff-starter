@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\IntrospectAuthFilter;
 use App\Filters\ThrottleFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\CSRF;
@@ -41,6 +42,7 @@ class Filters extends BaseFilters
         'pagecache'          => PageCache::class,
         'performance'        => PerformanceMetrics::class,
         'throttle'           => ThrottleFilter::class,
+        'introspectauth'     => IntrospectAuthFilter::class,
         'locale'             => LocaleFilter::class,
         'featureToggle'      => FeatureToggleFilter::class,
         'deprecationheaders' => \dcardenasl\Ci4ApiCore\Http\Filters\DeprecationHeadersFilter::class,
