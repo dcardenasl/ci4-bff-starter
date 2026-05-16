@@ -7,16 +7,25 @@ namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 /**
- * Hub configuration — coordinates with the central ci4-api-starter ("hub").
+ * Hub configuration — the **upstream client**'s view of the world.
  *
- * The hub owns auth, IAM, users, files. Each domain app delegates JWT validation
- * to the hub via POST /api/v1/auth/introspect and obtains its own service token
- * via POST /api/v1/auth/service-token.
+ * Owns the M2M credentials, endpoint paths and timeouts the `HubClient` uses
+ * to talk to the central ci4-api-starter ("hub"). The hub's *location* is
+ * shared with {@see Bff}; everything else here is HubClient-internal.
+ *
+ * Boundary with {@see Bff}:
+ *   - `Bff` = local server config (what this BFF serves, who it accepts)
+ *   - `Hub` = outbound client config (auth, paths, timeouts for hub calls)
+ *
+ * Both classes resolve `$url` / `$hubUrl` via {@see Bff::resolveHubUrl()} so a
+ * single env var (`bff.hubUrl`, falling back to `hub.url`) drives both.
  */
 class Hub extends BaseConfig
 {
     /**
      * Base URL of the hub (no trailing slash). e.g. http://localhost:8080
+     *
+     * Resolved from `bff.hubUrl` first; falls back to `hub.url`.
      */
     public string $url = '';
 
@@ -59,7 +68,7 @@ class Hub extends BaseConfig
     public function __construct()
     {
         parent::__construct();
-        $this->url     = (string) (env('hub.url') ?: $this->url);
+        $this->url     = Bff::resolveHubUrl();
         $this->apiKey  = (string) (env('hub.apiKey') ?: $this->apiKey);
         $this->appCode = (string) (env('hub.appCode') ?: $this->appCode);
 

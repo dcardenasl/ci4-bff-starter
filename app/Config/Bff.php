@@ -8,21 +8,29 @@ use CodeIgniter\Config\BaseConfig;
 use RuntimeException;
 
 /**
- * BFF configuration.
+ * BFF configuration — the **local server**'s view of the world.
  *
- * The BFF is a stateless gateway. Its only direct concerns are:
+ * Owns three things the BFF itself decides:
  *   - which upstream hub to talk to (`hubUrl`)
  *   - which upstream domain app to talk to (`domainUrl`, optional)
  *   - which client origins to accept (`allowedOrigins`)
  *
- * Authentication is forward-only: the BFF does not validate JWTs, it
- * relays the client's `Authorization` header to the upstream. This config
- * therefore has nothing to say about JWT secrets or sessions.
+ * For the **upstream client's** view (M2M auth, paths, timeouts), see
+ * {@see Hub} — they're intentionally separate so future BFF deployments
+ * fronting a different hub API version only touch `Hub`. The shared piece
+ * — the hub's base URL — is canonicalised under `bff.hubUrl` here; `hub.url`
+ * is accepted as a fallback so older `.env` files keep working.
+ *
+ * Authentication is forward-only: the BFF does not validate JWTs, it relays
+ * the client's `Authorization` header to the upstream. This config therefore
+ * has nothing to say about JWT secrets or sessions.
  */
 class Bff extends BaseConfig
 {
     /**
      * Base URL of the upstream hub (no trailing slash). e.g. http://localhost:8080
+     *
+     * Resolved from `bff.hubUrl` first; falls back to `hub.url` if unset.
      */
     public string $hubUrl = '';
 
@@ -44,7 +52,7 @@ class Bff extends BaseConfig
     {
         parent::__construct();
 
-        $this->hubUrl    = (string) (env('bff.hubUrl') ?: $this->hubUrl);
+        $this->hubUrl    = self::resolveHubUrl();
         $this->domainUrl = (string) (env('bff.domainUrl') ?: $this->domainUrl);
 
         $raw = (string) env('BFF_ALLOWED_ORIGINS', '');
@@ -56,6 +64,20 @@ class Bff extends BaseConfig
                 . 'Set a comma-separated list of permitted client origins in .env.'
             );
         }
+    }
+
+    /**
+     * Single resolver shared with {@see Hub} so both configs land on the same
+     * hub URL regardless of which env var the operator wrote.
+     */
+    public static function resolveHubUrl(): string
+    {
+        $primary = (string) env('bff.hubUrl', '');
+        if ($primary !== '') {
+            return $primary;
+        }
+
+        return (string) env('hub.url', '');
     }
 
     /**
