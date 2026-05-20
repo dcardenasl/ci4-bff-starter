@@ -11,29 +11,62 @@ use RuntimeException;
 
 class BffConfigTest extends CIUnitTestCase
 {
-    private string $originalEnv = '';
-    private string $originalCi  = '';
+    /** @var string|false */
+    private $originalGetenv;
+    private bool $hadEnv    = false;
+    private bool $hadServer = false;
+    private string $savedEnv    = '';
+    private string $savedServer = '';
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->originalEnv = (string) getenv('BFF_ALLOWED_ORIGINS');
-        $this->originalCi  = (string) (defined('ENVIRONMENT') ? ENVIRONMENT : 'testing');
+        $this->originalGetenv = getenv('BFF_ALLOWED_ORIGINS');
+        $this->hadEnv         = array_key_exists('BFF_ALLOWED_ORIGINS', $_ENV);
+        $this->hadServer      = array_key_exists('BFF_ALLOWED_ORIGINS', $_SERVER);
+        $this->savedEnv       = $this->hadEnv ? (string) $_ENV['BFF_ALLOWED_ORIGINS'] : '';
+        $this->savedServer    = $this->hadServer ? (string) $_SERVER['BFF_ALLOWED_ORIGINS'] : '';
     }
 
     protected function tearDown(): void
     {
-        if ($this->originalEnv !== '') {
-            putenv('BFF_ALLOWED_ORIGINS=' . $this->originalEnv);
+        if ($this->originalGetenv !== false) {
+            putenv('BFF_ALLOWED_ORIGINS=' . $this->originalGetenv);
         } else {
             putenv('BFF_ALLOWED_ORIGINS');
         }
+
+        if ($this->hadEnv) {
+            $_ENV['BFF_ALLOWED_ORIGINS'] = $this->savedEnv;
+        } else {
+            unset($_ENV['BFF_ALLOWED_ORIGINS']);
+        }
+
+        if ($this->hadServer) {
+            $_SERVER['BFF_ALLOWED_ORIGINS'] = $this->savedServer;
+        } else {
+            unset($_SERVER['BFF_ALLOWED_ORIGINS']);
+        }
+
         parent::tearDown();
+    }
+
+    private function setOrigins(string $value): void
+    {
+        putenv('BFF_ALLOWED_ORIGINS=' . $value);
+        $_ENV['BFF_ALLOWED_ORIGINS']    = $value;
+        $_SERVER['BFF_ALLOWED_ORIGINS'] = $value;
+    }
+
+    private function clearOrigins(): void
+    {
+        putenv('BFF_ALLOWED_ORIGINS');
+        unset($_ENV['BFF_ALLOWED_ORIGINS'], $_SERVER['BFF_ALLOWED_ORIGINS']);
     }
 
     public function testParsesCommaSeparatedOrigins(): void
     {
-        putenv('BFF_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173');
+        $this->setOrigins('http://localhost:3000,http://localhost:5173');
 
         $config = new Bff();
 
@@ -45,7 +78,7 @@ class BffConfigTest extends CIUnitTestCase
 
     public function testTrimsWhitespaceAndDropsEmpties(): void
     {
-        putenv('BFF_ALLOWED_ORIGINS=  http://a.test , , http://b.test  ');
+        $this->setOrigins('  http://a.test , , http://b.test  ');
 
         $config = new Bff();
 
@@ -54,7 +87,7 @@ class BffConfigTest extends CIUnitTestCase
 
     public function testEmptyAllowedOriginsTolerableInDevelopment(): void
     {
-        putenv('BFF_ALLOWED_ORIGINS=');
+        $this->clearOrigins();
 
         $config = new Bff();
 

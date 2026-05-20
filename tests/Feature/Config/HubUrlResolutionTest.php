@@ -21,25 +21,38 @@ class HubUrlResolutionTest extends ApiTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        putenv('bff.hubUrl');
-        putenv('hub.url');
+        $this->clearEnvKey('bff.hubUrl');
+        $this->clearEnvKey('hub.url');
         Services::resetSingle('bff');
         Services::resetSingle('hub');
     }
 
     protected function tearDown(): void
     {
-        putenv('bff.hubUrl');
-        putenv('hub.url');
+        $this->clearEnvKey('bff.hubUrl');
+        $this->clearEnvKey('hub.url');
         Services::resetSingle('bff');
         Services::resetSingle('hub');
         parent::tearDown();
     }
 
+    private function setEnvKey(string $key, string $value): void
+    {
+        putenv($key . '=' . $value);
+        $_ENV[$key]    = $value;
+        $_SERVER[$key] = $value;
+    }
+
+    private function clearEnvKey(string $key): void
+    {
+        putenv($key);
+        unset($_ENV[$key], $_SERVER[$key]);
+    }
+
     public function testCanonicalEnvVarWins(): void
     {
-        putenv('bff.hubUrl=http://primary.test');
-        putenv('hub.url=http://legacy.test');
+        $this->setEnvKey('bff.hubUrl', 'http://primary.test');
+        $this->setEnvKey('hub.url', 'http://legacy.test');
 
         $this->assertSame('http://primary.test', (new Bff())->hubUrl);
         $this->assertSame('http://primary.test', (new Hub())->url);
@@ -47,7 +60,7 @@ class HubUrlResolutionTest extends ApiTestCase
 
     public function testFallsBackToLegacyEnvVar(): void
     {
-        putenv('hub.url=http://legacy.test');
+        $this->setEnvKey('hub.url', 'http://legacy.test');
 
         $this->assertSame('http://legacy.test', (new Bff())->hubUrl);
         $this->assertSame('http://legacy.test', (new Hub())->url);
