@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filters;
 
-use App\Libraries\Hub\HubClient;
 use Config\Services;
-use dcardenasl\Ci4ApiCore\Http\Filters\AbstractJwtAuthFilter;
-use stdClass;
+use dcardenasl\Ci4ApiCore\Http\Client\IntrospectResult;
+use dcardenasl\Ci4ApiCore\Http\Filters\AbstractIntrospectionFilter;
 
 /**
  * Opt-in JWT auth filter for aggregator endpoints that need the user context.
@@ -21,32 +20,14 @@ use stdClass;
  *         'filter' => 'introspectauth',
  *     ]);
  *
- * Token validation is delegated to the hub via {@see HubClient::introspect()},
+ * Token validation is delegated to the hub via {@see \App\Libraries\Hub\HubClient::introspect()},
  * which caches positive results. The BFF therefore never holds the JWT secret
  * and remains stateless.
  */
-class IntrospectAuthFilter extends AbstractJwtAuthFilter
+class IntrospectAuthFilter extends AbstractIntrospectionFilter
 {
-    protected function decodeToken(string $token): ?object
+    protected function introspect(string $token): IntrospectResult
     {
-        $result = $this->hubClient()->introspect($token);
-
-        if (! $result->valid) {
-            return null;
-        }
-
-        // Adapt IntrospectResult to the shape AbstractJwtAuthFilter expects:
-        // an object exposing `uid` (int), `scope` (list<string>), and `jti`.
-        $decoded              = new stdClass();
-        $decoded->uid         = $result->uid ?? 0;
-        $decoded->scope       = $result->permissions;
-        $decoded->jti         = null;
-
-        return $decoded;
-    }
-
-    private function hubClient(): HubClient
-    {
-        return Services::hubClient();
+        return Services::hubClient()->introspect($token);
     }
 }
