@@ -79,11 +79,16 @@ For a fully orchestrated multi-repo project, use
 
 ## Adding a proxy endpoint
 
-Create a routes file under `app/Config/Routes/v1/*.php` and a thin
-controller under `app/Controllers/Api/V1/` that uses `HubClient` (or
+For hand-authored endpoints, create a routes file under
+`app/Config/Routes/v1/*.php` and a thin controller under
+`app/Controllers/Api/V1/` that uses `HubClient` (or
 `Services::curlrequest()`) to call upstream. Pass the client's
 `Authorization` header through; the hub/domain will return 401 if the
 token is invalid.
+
+When the BFF is generated through `ci4-kickstart`, any
+`template.json.public_endpoints[]` entries are turned into transparent
+passthrough routes automatically via `PublicProxyController`.
 
 ## Quality
 
