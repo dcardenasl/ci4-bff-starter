@@ -41,6 +41,10 @@ $routes->get('products/(:num)', '\App\Controllers\Api\V1\Products\ProductsProxyC
 Then annotate in `app/Documentation/Products/ProductsEndpoints.php` and run
 `php spark swagger:generate`.
 
+If the endpoint is declared in a template's `public_endpoints[]`, kickstart
+will generate the corresponding route file automatically; the controller
+surface is `App\Controllers\Api\V1\PublicProxyController::forward()`.
+
 ### Pattern 2: Aggregator (fan out, merge, no auth required)
 
 Use when one client request fans out to N upstream calls and the response

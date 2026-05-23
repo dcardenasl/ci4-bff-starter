@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] — 2026-05-23
+
+### Added
+
+- `app/Config/Routes/v1/public.php` placeholder for kickstart-generated public passthrough routes handled by `PublicProxyController::forward()`.
+
+## [1.2.0] — 2026-05-23
+
+### Added
+
+- **`PublicProxyController`** — generic transparent passthrough controller used by kickstart-generated routes for template-driven `public_endpoints[]`.
+
 ## [1.1.0] — 2026-05-23
 
 ### Security
