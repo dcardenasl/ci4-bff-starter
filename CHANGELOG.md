@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] — 2026-05-23
+
+### Fixed
+
+- `init.sh`: switched `.env` value injection from raw `printf` appends to `php scripts/bootstrap_env.php` (handles quoted/unquoted existing values correctly) and added `php spark key:generate --force` for the encryption key.
+
 ## [1.0.0] - 2026-05-20
 
 First stable release of `ci4-bff-starter`.
