@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] — 2026-05-23
+
+### Added
+
+- **`PublicProxyController`** — generic transparent passthrough controller used by kickstart-generated routes for template-driven `public_endpoints[]`.
+
 ## [1.1.0] — 2026-05-23
 
 ### Security
