@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] — 2026-05-23
+
+### Security
+
+- Bumped `symfony/yaml` from v7.4.11 to v7.4.12 to address CVE-2026-45133, CVE-2026-45304, and CVE-2026-45305 (arbitrary code execution in YAML parsing). This update is **recommended immediately** for all running deployments.
+
 ## [1.0.1] — 2026-05-23
 
 ### Fixed
