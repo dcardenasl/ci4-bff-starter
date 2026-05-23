@@ -13,10 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `app/Config/Routes/v1/public.php` placeholder for kickstart-generated public passthrough routes handled by `PublicProxyController::forward()`.
 
-### Fixed
-
-- `scripts/bootstrap_env.php` now appends missing keys to `.env` instead of failing when the file omits values that the setup flow wants to set.
-
 ## [1.2.0] — 2026-05-23
 
 ### Added
