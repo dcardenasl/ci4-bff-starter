@@ -152,7 +152,8 @@ print_header "Validating ci4-api-core service wiring"
 if php spark core:check 2>/dev/null; then
   print_ok "Service wiring OK"
 else
-  print_warn "core:check unavailable or failed — verify app/Config/Services.php manually."
+  print_error "core:check failed — fix app/Config/Services.php before considering the BFF ready."
+  exit 1
 fi
 
 # ---------------------------------------------------------------------------

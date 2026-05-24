@@ -12,6 +12,25 @@ namespace Config;
  */
 trait ApiCoreServices
 {
+    public static function auditService(bool $getShared = true): \dcardenasl\Ci4ApiCore\Services\AuditServiceInterface
+    {
+        if ($getShared) {
+            return static::getSharedInstance('auditService');
+        }
+
+        // The BFF is stateless and does not persist an audit table.
+        return new \dcardenasl\Ci4ApiCore\Services\Audit\NullAuditService();
+    }
+
+    public static function requestAuditContextFactory(bool $getShared = true): \dcardenasl\Ci4ApiCore\Support\RequestAuditContextFactory
+    {
+        if ($getShared) {
+            return static::getSharedInstance('requestAuditContextFactory');
+        }
+
+        return new \dcardenasl\Ci4ApiCore\Support\RequestAuditContextFactory();
+    }
+
     public static function requestDataCollector(bool $getShared = true): \dcardenasl\Ci4ApiCore\Support\RequestDataCollector
     {
         if ($getShared) {
