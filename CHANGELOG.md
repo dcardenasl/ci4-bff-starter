@@ -7,11 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.2.1] — 2026-05-23
+## [1.2.1] — 2026-05-24
 
 ### Added
 
 - `app/Config/Routes/v1/public.php` placeholder for kickstart-generated public passthrough routes handled by `PublicProxyController::forward()`.
+
+### Fixed
+
+- `app/Config/ApiCoreServices.php` now correctly wires the four required `ci4-api-core` service factories (`auditService`, `requestAuditContextFactory`, `requestDtoFactory`, `requestDataCollector`). `init.sh` updated to invoke `php spark core:install` as part of setup.
 
 ## [1.2.0] — 2026-05-23
 
