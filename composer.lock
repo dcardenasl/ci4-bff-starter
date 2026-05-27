@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92c401177f20b2350581af6ba77c2ec1",
+    "content-hash": "a4253d2deede7cf1adbdd309269514c3",
     "packages": [
         {
             "name": "codeigniter4/framework",
@@ -85,16 +85,16 @@
         },
         {
             "name": "dcardenasl/ci4-api-core",
-            "version": "v0.7.0",
+            "version": "v0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dcardenasl/ci4-api-core.git",
-                "reference": "8c7135a6aeb05ca01eef6c865c92f1e5101f647a"
+                "reference": "76e5f761a63e8bfb20c057c51fbef3ce5173bf71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dcardenasl/ci4-api-core/zipball/8c7135a6aeb05ca01eef6c865c92f1e5101f647a",
-                "reference": "8c7135a6aeb05ca01eef6c865c92f1e5101f647a",
+                "url": "https://api.github.com/repos/dcardenasl/ci4-api-core/zipball/76e5f761a63e8bfb20c057c51fbef3ce5173bf71",
+                "reference": "76e5f761a63e8bfb20c057c51fbef3ce5173bf71",
                 "shasum": ""
             },
             "require": {
@@ -170,7 +170,7 @@
                 "issues": "https://github.com/dcardenasl/ci4-api-core/issues",
                 "source": "https://github.com/dcardenasl/ci4-api-core"
             },
-            "time": "2026-05-20T17:58:54+00:00"
+            "time": "2026-05-27T21:50:12+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
