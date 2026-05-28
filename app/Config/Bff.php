@@ -35,10 +35,11 @@ class Bff extends BaseConfig
     public string $hubUrl = '';
 
     /**
-     * Base URL of an upstream domain app (no trailing slash). Optional —
-     * leave empty if the BFF only proxies the hub.
+     * Base URLs of upstream domain apps.
+     *
+     * @var array<string, string> Key is the domain identifier, value is the URL.
      */
-    public string $domainUrl = '';
+    public array $domains = [];
 
     /**
      * Origins permitted by CORS. Populated from the comma-separated
@@ -52,11 +53,14 @@ class Bff extends BaseConfig
     {
         parent::__construct();
 
-        $this->hubUrl    = self::resolveHubUrl();
-        $this->domainUrl = (string) (env('bff.domainUrl') ?: $this->domainUrl);
+        $this->hubUrl = self::resolveHubUrl();
 
-        $raw = (string) env('BFF_ALLOWED_ORIGINS', '');
-        $this->allowedOrigins = $this->parseCsv($raw);
+        // Parse domains from env: BFF_DOMAINS="auth:http://localhost:8090,billing:http://localhost:8091"
+        $rawDomains = (string) env('BFF_DOMAINS', '');
+        $this->domains = $this->parseDomains($rawDomains);
+
+        $rawOrigins = (string) env('BFF_ALLOWED_ORIGINS', '');
+        $this->allowedOrigins = $this->parseCsv($rawOrigins);
 
         if (ENVIRONMENT === 'production' && $this->allowedOrigins === []) {
             throw new RuntimeException(
@@ -65,6 +69,29 @@ class Bff extends BaseConfig
             );
         }
     }
+
+    /**
+     * Parses the BFF_DOMAINS env var into an associative array.
+     *
+     * @return array<string, string>
+     */
+    private function parseDomains(string $value): array
+    {
+        if ($value === '') {
+            return [];
+        }
+
+        $domains = [];
+        foreach (explode(',', $value) as $item) {
+            $parts = explode(':', trim($item), 2);
+            if (count($parts) === 2) {
+                $domains[trim($parts[0])] = trim($parts[1]);
+            }
+        }
+
+        return $domains;
+    }
+
 
     /**
      * Single resolver shared with {@see Hub} so both configs land on the same

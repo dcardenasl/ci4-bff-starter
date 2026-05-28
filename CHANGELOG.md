@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] — 2026-05-27
+
+### Changed
+
+- **`Config\Bff::$domainUrl` replaced by `$domains array<string, string>`** — supports multiple named domain upstreams. Configure via `BFF_DOMAINS="catalog:http://localhost:8090,billing:http://localhost:8091"`. **Migration:** replace `bff.domainUrl = http://...` in `.env` with `BFF_DOMAINS="default:http://..."`. The old single-string property is removed.
+- **`dcardenasl/ci4-api-core` bumped to `^0.8.0`**.
+- **CodeIgniter 4 updated to v4.7.3** (`composer.lock`).
+
 ## [1.2.1] — 2026-05-24
 
 ### Added
