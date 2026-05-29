@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] — 2026-05-29
+
+### Added
+
+- **`AppExceptionHandler`** (`app/Libraries/Exceptions/`) — app-level exception handler extending `BaseExceptionHandler` from `ci4-api-core`; wired into CI4 via `Config\Exceptions::handler()`.
+- **Health route delegation** — `GET /health` in `Routes/v1/system.php` now delegates to `\dcardenasl\Ci4ApiCore\Http\HealthCheckController::index`.
+
 ## [1.4.0] — 2026-05-29
 
 ### Changed
@@ -82,3 +89,13 @@ First stable release of `ci4-bff-starter`.
 - PHP `^8.2`
 - CodeIgniter 4 `^4.7`
 - `dcardenasl/ci4-api-core` `^0.7.0`
+
+[unreleased]: https://github.com/dcardenasl/ci4-bff-starter/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/dcardenasl/ci4-bff-starter/compare/v1.4.0...v1.5.0
+[1.4.0]: https://github.com/dcardenasl/ci4-bff-starter/compare/v1.3.0...v1.4.0
+[1.3.0]: https://github.com/dcardenasl/ci4-bff-starter/compare/v1.2.1...v1.3.0
+[1.2.1]: https://github.com/dcardenasl/ci4-bff-starter/compare/v1.2.0...v1.2.1
+[1.2.0]: https://github.com/dcardenasl/ci4-bff-starter/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/dcardenasl/ci4-bff-starter/compare/v1.0.1...v1.1.0
+[1.0.1]: https://github.com/dcardenasl/ci4-bff-starter/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/dcardenasl/ci4-bff-starter/releases/tag/v1.0.0
