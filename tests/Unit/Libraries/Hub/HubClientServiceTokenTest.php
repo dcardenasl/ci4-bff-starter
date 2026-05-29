@@ -4,26 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Libraries\Hub;
 
-use App\Libraries\Hub\HubClient;
 use CodeIgniter\Cache\CacheInterface;
 use CodeIgniter\HTTP\CURLRequest;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Test\CIUnitTestCase;
-use Config\Hub as HubConfig;
 use dcardenasl\Ci4ApiCore\Exceptions\ServiceUnavailableException;
+use dcardenasl\Ci4ApiCore\Http\Client\HubClient;
 
 class HubClientServiceTokenTest extends CIUnitTestCase
 {
-    private function makeConfig(int $safetyMargin = 30): HubConfig
+    private function makeConfig(int $safetyMargin = 30): \dcardenasl\Ci4ApiCore\Http\Client\HubClientConfig
     {
-        $config                           = new HubConfig();
-        $config->url                      = 'http://hub.test';
-        $config->apiKey                   = 'test-key';
-        $config->appCode                  = 'test-app';
-        $config->serviceTokenSafetyMargin = $safetyMargin;
-        $config->httpTimeout              = 5;
-
-        return $config;
+        return new \dcardenasl\Ci4ApiCore\Http\Client\HubClientConfig(
+            url: 'http://hub.test',
+            apiKey: 'test-key',
+            serviceTokenSafetyMargin: $safetyMargin,
+            httpTimeout: 5
+        );
     }
 
     public function testReturnsCachedTokenWhenWellWithinExpiry(): void

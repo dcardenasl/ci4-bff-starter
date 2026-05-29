@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] — 2026-05-29
+
+### Changed
+
+- **Platform Coherence:**
+  - Removed legacy `App\Libraries\Hub\HubClient` in favor of `ci4-api-core` base client.
+  - Updated infrastructure configuration and routing to align with v2.x standards.
+  - Bumped `dcardenasl/ci4-api-core` to `^0.9.0`.
+
 ## [1.3.0] — 2026-05-27
 
 ### Changed
