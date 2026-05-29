@@ -31,6 +31,26 @@ class Services extends BaseService
         );
     }
 
+    public static function domainClient(string $domainCode, bool $getShared = true): \App\Libraries\Domain\DomainClient
+    {
+        if ($getShared) {
+            return static::getSharedInstance('domainClient', $domainCode);
+        }
+
+        /** @var \Config\Bff $bffConfig */
+        $bffConfig = config('Bff');
+        $baseUrl   = $bffConfig->domains[$domainCode] ?? null;
+
+        if ($baseUrl === null) {
+            throw new \InvalidArgumentException("Domain client misconfigured: Upstream domain URL for '{$domainCode}' is not defined in Config\\Bff::\$domains.");
+        }
+
+        return new \App\Libraries\Domain\DomainClient(
+            \Config\Services::curlrequest(),
+            $baseUrl
+        );
+    }
+
     public static function healthChecker(bool $getShared = true): \dcardenasl\Ci4ApiCore\Monitoring\HealthChecker
     {
         if ($getShared) {
