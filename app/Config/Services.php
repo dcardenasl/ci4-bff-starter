@@ -18,14 +18,28 @@ class Services extends BaseService
 {
     use ApiCoreServices;
 
-    public static function hubClient(bool $getShared = true): \App\Libraries\Hub\HubClient
+    public static function hubClient(bool $getShared = true): \dcardenasl\Ci4ApiCore\Http\Client\HubClient
     {
         if ($getShared) {
             return static::getSharedInstance('hubClient');
         }
 
-        return new \App\Libraries\Hub\HubClient(
-            config('Hub'),
+        /** @var \Config\Hub $hubConfig */
+        $hubConfig = config('Hub');
+
+        $coreHubConfig = new \dcardenasl\Ci4ApiCore\Http\Client\HubClientConfig(
+            url: $hubConfig->url,
+            apiKey: $hubConfig->apiKey,
+            introspectPath: $hubConfig->introspectPath ?? '/api/v1/auth/introspect',
+            serviceTokenPath: $hubConfig->serviceTokenPath ?? '/api/v1/auth/service-token',
+            permissionsPath: $hubConfig->permissionsPath ?? '/api/v1/iam/permissions',
+            introspectCacheTtl: $hubConfig->introspectCacheTtl ?? 60,
+            serviceTokenSafetyMargin: $hubConfig->serviceTokenSafetyMargin ?? 30,
+            httpTimeout: $hubConfig->httpTimeout ?? 5,
+        );
+
+        return new \dcardenasl\Ci4ApiCore\Http\Client\HubClient(
+            $coreHubConfig,
             \Config\Services::curlrequest(),
             \Config\Services::cache()
         );

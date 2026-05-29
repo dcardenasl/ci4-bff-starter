@@ -4,26 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Libraries\Hub;
 
-use App\Libraries\Hub\HubClient;
 use CodeIgniter\Cache\CacheInterface;
 use CodeIgniter\HTTP\CURLRequest;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Test\CIUnitTestCase;
-use Config\Hub as HubConfig;
 use dcardenasl\Ci4ApiCore\Exceptions\AuthenticationException;
 use dcardenasl\Ci4ApiCore\Exceptions\AuthorizationException;
+use dcardenasl\Ci4ApiCore\Http\Client\HubClient;
 
 class HubClientRegisterPermissionTest extends CIUnitTestCase
 {
-    private function makeConfig(): HubConfig
+    private function makeConfig(): \dcardenasl\Ci4ApiCore\Http\Client\HubClientConfig
     {
-        $config              = new HubConfig();
-        $config->url         = 'http://hub.test';
-        $config->apiKey      = 'test-key';
-        $config->appCode     = 'test-app';
-        $config->httpTimeout = 5;
-
-        return $config;
+        return new \dcardenasl\Ci4ApiCore\Http\Client\HubClientConfig(
+            url: 'http://hub.test',
+            apiKey: 'test-key',
+            httpTimeout: 5
+        );
     }
 
     /**

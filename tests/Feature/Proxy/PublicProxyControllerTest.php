@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Proxy;
 
-use App\Libraries\Hub\HubClient;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\ControllerTestTrait;
 use Config\Services;
+use dcardenasl\Ci4ApiCore\Http\Client\HubClient;
 
 /**
  * Pins the template-driven public passthrough contract: routes generated from

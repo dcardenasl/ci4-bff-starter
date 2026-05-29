@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -73,7 +75,7 @@ if (file_exists(APPPATH . 'Config/Routes/v1/system.php')) {
 
 // Module routes (proxy/aggregate endpoints) under /api/v1.
 // Add files under app/Config/Routes/v1/*.php to expose new endpoints.
-$routes->group('api/v1', function ($routes) {
+$routes->group('api/v1', function ($routes): void {
     $routesDir = APPPATH . 'Config/Routes/v1';
 
     if (is_dir($routesDir)) {
