@@ -4,7 +4,9 @@
 
 - **Unificación de Throttling (BFF-M1)**: `ThrottleFilter` local eliminado en favor de la implementación del core. `RateLimitResponseHelpers` eliminado (ahora consumido desde `ci4-api-core`).
 - **Propagación de `app_id`**: El BFF ahora es consciente de la aplicación a través de la propagación automática en `IntrospectAuthFilter` y `ContextHolder`.
+- **Soporte Multi-Domain (BFF-M2)**: `Config/Bff.php` y `Services.php` refactorizados para admitir un array asociativo de dominios dinámicos mapeados vía `DomainClient`.
+- **Generador de Proxy Dinámico (BFF-M3)**: Implementado el comando CLI Spark `bff:make-proxy` para generar automáticamente controladores de proxy transparentes y archivos de rutas.
 
 ### 🚀 Roadmap
-- [ ] **Multi-Domain Support**: Refactor Config/Bff.php and Services.php to handle an array of domain endpoints instead of a single domainUrl.
-- [ ] **Dynamic Proxy Controllers**: Create a base class or command to generate proxy controllers for multiple upstream domains.
+
+*(todos los objetivos planificados para este hito han sido completados)*
