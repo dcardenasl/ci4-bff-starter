@@ -1,6 +1,6 @@
 {
     "name": "dcardenasl/ci4-bff-starter",
-    "description": "CodeIgniter 4 Backend-for-Frontend Starter — stateless gateway over a ci4-api-starter hub and one or more ci4-domain-starter apps.",
+    "description": "CodeIgniter 4 Backend-for-Frontend Starter \u2014 stateless gateway over a ci4-api-starter hub and one or more ci4-domain-starter apps.",
     "type": "project",
     "license": "MIT",
     "require": {
@@ -12,7 +12,14 @@
         "zircote/swagger-php": "^6.0"
     },
     "repositories": [
-        { "type": "path", "url": "../ci4-api-core", "options": { "symlink": true }, "canonical": false }
+        {
+            "type": "path",
+            "url": "../ci4-api-core",
+            "options": {
+                "symlink": true
+            },
+            "canonical": false
+        }
     ],
     "require-dev": {
         "fakerphp/faker": "^1.9",
