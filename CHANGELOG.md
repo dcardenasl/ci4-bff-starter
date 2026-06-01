@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.3] — 2026-06-01
+
+### Changed
+
+- **`init.sh` logging control** — enhanced with `CI4_FORCE_LOG_TO_FILE` conditional flag support for consistent log handling in containerized/CI environments.
+
 ## [1.5.2] — 2026-05-30
 
 ### Changed
