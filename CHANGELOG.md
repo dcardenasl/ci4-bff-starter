@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.4] — 2026-06-04
+
+### Changed
+
+- **`dcardenasl/ci4-api-core` constraint** — bumped from `^0.9.0` to `^1.0` following the stable v1.0.0 release of the core package.
+
 ## [1.5.3] — 2026-06-01
 
 ### Changed
