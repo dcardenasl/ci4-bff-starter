@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.0] — 2026-06-10
+
+### Added
+
+- **Webhook signature header forwarding** — `DomainClient::buildForwardedHeaders()` now widens the core allow-list with `X-Twilio-Email-Event-Webhook-Signature`, `X-Twilio-Email-Event-Webhook-Timestamp` and `X-Webhook-Token`, so upstream domains can verify provider-signed webhooks (e.g. SendGrid Signed Event Webhooks) proxied through the BFF. Backported from the multi-subscription newsletter stack (audit 2026-06-10, H-2).
+
 ## [1.5.4] — 2026-06-04
 
 ### Changed
