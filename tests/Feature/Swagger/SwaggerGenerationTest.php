@@ -33,7 +33,7 @@ class SwaggerGenerationTest extends ApiTestCase
         }
 
         $this->assertSame('3.0.0', $json['openapi']);
-        $this->assertSame('http://localhost:8088', $json['servers'][0]['url']);
+        $this->assertSame('http://localhost:8188', $json['servers'][0]['url']);
 
         $tags = array_column($json['tags'], 'name');
         $this->assertContains('System', $tags);

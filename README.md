@@ -12,9 +12,9 @@ apps for decoupled clients (SPAs, mobile).
 ## Role
 
 ```
-SPA / Mobile  ──▶  ci4-bff-starter (:8088)
-                        ├─▶  hub (ci4-api-starter :8080)
-                        └─▶  domain (ci4-domain-starter :8090)
+SPA / Mobile  ──▶  ci4-bff-starter (:8188)
+                        ├─▶  hub (ci4-api-starter :8180)
+                        └─▶  domain (ci4-domain-starter :8190)
 ```
 
 The BFF:
@@ -59,8 +59,8 @@ composer install
 cp .env.example .env
 # Edit .env: set bff.hubUrl, bff.domainUrl, BFF_ALLOWED_ORIGINS.
 
-php spark serve --port 8088
-curl http://localhost:8088/ping
+php spark serve --port 8188
+curl http://localhost:8188/ping
 ```
 
 For a fully orchestrated multi-repo project, use

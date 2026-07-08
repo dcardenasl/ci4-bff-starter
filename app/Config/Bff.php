@@ -28,7 +28,7 @@ use RuntimeException;
 class Bff extends BaseConfig
 {
     /**
-     * Base URL of the upstream hub (no trailing slash). e.g. http://localhost:8080
+     * Base URL of the upstream hub (no trailing slash). e.g. http://localhost:8180
      *
      * Resolved from `bff.hubUrl` first; falls back to `hub.url` if unset.
      */
@@ -55,7 +55,7 @@ class Bff extends BaseConfig
 
         $this->hubUrl = self::resolveHubUrl();
 
-        // Parse domains from env: BFF_DOMAINS="auth:http://localhost:8090,billing:http://localhost:8091"
+        // Parse domains from env: BFF_DOMAINS="auth:http://localhost:8190,billing:http://localhost:8091"
         $rawDomains = (string) env('BFF_DOMAINS', '');
         $this->domains = $this->parseDomains($rawDomains);
 

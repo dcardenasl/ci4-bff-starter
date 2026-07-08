@@ -104,8 +104,8 @@ printf "The BFF is a stateless gateway over a hub (ci4-api-starter) and an\n"
 printf "optional domain app (ci4-domain-starter). You need the URLs of each\n"
 printf "and the comma-separated list of client origins allowed by CORS.\n\n"
 
-HUB_URL="$(ask_with_default 'Hub URL' "${BFF_HUB_URL:-http://localhost:8080}")"
-DOMAIN_URL="$(ask_with_default 'Domain URL (blank = no domain)' "${BFF_DOMAIN_URL:-http://localhost:8090}")"
+HUB_URL="$(ask_with_default 'Hub URL' "${BFF_HUB_URL:-http://localhost:8180}")"
+DOMAIN_URL="$(ask_with_default 'Domain URL (blank = no domain)' "${BFF_DOMAIN_URL:-http://localhost:8190}")"
 ALLOWED_ORIGINS="$(ask_with_default 'Allowed origins (CSV)' "${BFF_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173}")"
 
 # Optional: hub appCode + apiKey for M2M service-token calls. Most BFFs do not
@@ -170,7 +170,7 @@ printf "Hub:    %s\n" "$HUB_URL"
 printf "Domain: %s\n" "${DOMAIN_URL:-<none>}"
 printf "CORS:   %s\n" "$ALLOWED_ORIGINS"
 
-BFF_PORT="${BFF_PORT:-8088}"
+BFF_PORT="${BFF_PORT:-8188}"
 
 if [ "$SKIP_SERVER" = false ]; then
   read -r -p "Start development server now? (y/N): " START_SERVER
