@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.2] — 2026-07-24
+
+### Security
+
+- **`guzzlehttp/psr7`** bumped 2.10.3 → 2.13.0 (transitive via `sentry/sentry`) — resolves CVE-2026-59882 (host confusion via weak URI host validation) and CVE-2026-55766 (CRLF injection in HTTP start-line serialization). No code changes required; the existing constraint already permitted the patched version.
+
 ## [1.6.1] — 2026-07-24
 
 ### Changed
