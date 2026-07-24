@@ -23,7 +23,7 @@ use CodeIgniter\Config\BaseConfig;
 class Hub extends BaseConfig
 {
     /**
-     * Base URL of the hub (no trailing slash). e.g. http://localhost:8080
+     * Base URL of the hub (no trailing slash). e.g. http://localhost:8180
      *
      * Resolved from `bff.hubUrl` first; falls back to `hub.url`.
      */

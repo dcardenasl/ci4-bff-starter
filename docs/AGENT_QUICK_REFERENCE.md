@@ -6,7 +6,7 @@ This file is the fastest path to productivity. Read it before touching any code 
 
 | Command | Purpose | When |
 |---------|---------|------|
-| `php spark serve --port 8088` | Start the BFF dev server | First terminal |
+| `php spark serve --port 8188` | Start the BFF dev server | First terminal |
 | `vendor/bin/phpunit` | Run all tests | Before pushing |
 | `vendor/bin/phpunit tests/Unit` | Unit tests only (fast, no HTTP) | During development |
 | `vendor/bin/phpunit tests/Feature` | Feature / HTTP tests | Before pushing |
@@ -129,7 +129,7 @@ app/
 
 | Variable | Purpose |
 |---|---|
-| `bff.hubUrl` | Hub base URL (e.g. `http://localhost:8080`). Canonical — preferred over `hub.url`. |
+| `bff.hubUrl` | Hub base URL (e.g. `http://localhost:8180`). Canonical — preferred over `hub.url`. |
 | `bff.domainUrl` | Domain app base URL (optional; only needed if BFF calls domain). |
 | `BFF_ALLOWED_ORIGINS` | Comma-separated CORS allow-list. Empty in production throws. |
 | `encryption.key` | CI4 encryption key (`hex2bin:` + 32 random bytes). |

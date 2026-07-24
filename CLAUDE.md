@@ -9,9 +9,9 @@ a stateless HTTP gateway placed between decoupled clients (SPA, mobile) and
 the rest of the platform:
 
 ```
-Client (SPA/mobile)  →  ci4-bff-starter (:8088)
-                            ├─▶ ci4-api-starter (hub, :8080)
-                            └─▶ ci4-domain-starter (:8090)
+Client (SPA/mobile)  →  ci4-bff-starter (:8188)
+                            ├─▶ ci4-api-starter (hub, :8180)
+                            └─▶ ci4-domain-starter (:8190)
 ```
 
 ## Boundaries
@@ -30,8 +30,8 @@ hub + domain, and optional service-token-based admin calls.
 ## Essential commands
 
 ```bash
-# Dev server (default port 8088 to fit the 808X series of the kit)
-php spark serve --port 8088
+# Dev server (default port 8188 to fit the 808X series of the kit)
+php spark serve --port 8188
 
 # Tests
 vendor/bin/phpunit                     # all
@@ -199,7 +199,7 @@ new endpoint isn't annotated under `app/Documentation/`.
 
 | Variable | Purpose |
 |---|---|
-| `bff.hubUrl` | Base URL of the hub (e.g. `http://localhost:8080`) |
+| `bff.hubUrl` | Base URL of the hub (e.g. `http://localhost:8180`) |
 | `bff.domainUrl` | Base URL of the upstream domain app (optional) |
 | `BFF_ALLOWED_ORIGINS` | Comma-separated CORS allow-list. Empty in production = throw. |
 | `encryption.key` | CI4 encryption key (32 bytes after `hex2bin:` decode) |

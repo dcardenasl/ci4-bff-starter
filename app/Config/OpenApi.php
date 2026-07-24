@@ -25,7 +25,7 @@ use OpenApi\Attributes as OA;
     description: \Config\Project::DESCRIPTION,
 )]
 #[OA\Server(
-    url: 'http://localhost:8088',
+    url: 'http://localhost:8188',
     description: 'Local development server (BFF)'
 )]
 #[OA\SecurityScheme(

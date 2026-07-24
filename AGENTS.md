@@ -1,6 +1,6 @@
 # ci4-bff-starter
 
-Stateless Backend-for-Frontend gateway template (port 8088).
+Stateless Backend-for-Frontend gateway template (port 8188).
 Forwards client requests to hub (`ci4-api-starter`) and/or domain apps. No database, no JWT validation, no user storage.
 
 ## Entry Points
@@ -39,7 +39,7 @@ Three composable patterns — choose one per endpoint:
 ## Commands
 
 ```bash
-php spark serve --port 8088
+php spark serve --port 8188
 vendor/bin/phpunit
 composer quality    # phpstan + cs-check + phpunit + arch-drift
 composer cs-fix

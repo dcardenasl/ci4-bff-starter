@@ -3,17 +3,17 @@
 ## Role in the platform stack
 
 `ci4-bff-starter` is a stateless HTTP gateway placed between decoupled clients
-(SPA, mobile) and the backend services of the platform. It runs on port 8088.
+(SPA, mobile) and the backend services of the platform. It runs on port 8188.
 
 ```
 Client (SPA / mobile)
         |
         v
-  ci4-bff-starter  (:8088)
+  ci4-bff-starter  (:8188)
         |
-        +---> ci4-api-starter / Hub  (:8080)   [users, auth, IAM, hub domain]
+        +---> ci4-api-starter / Hub  (:8180)   [users, auth, IAM, hub domain]
         |
-        +---> ci4-domain-starter     (:8090)   [domain-specific data]
+        +---> ci4-domain-starter     (:8190)   [domain-specific data]
 ```
 
 The BFF exists to solve three gateway concerns that the hub and domain apps
