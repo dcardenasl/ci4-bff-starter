@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.1] — 2026-07-24
+
+### Changed
+
+- **Default ports** — aligned the documented/example defaults across `.env.example`, `AGENTS.md`, `CLAUDE.md`, `README.md`, and `init.sh` to the kit-wide series: BFF `8188`, hub `8180`, domain `8190` (previously `8088`/`8080`/`8090`), matching `ci4-api-starter` and `ci4-domain-starter`.
+
 ## [1.6.0] — 2026-06-10
 
 ### Added
