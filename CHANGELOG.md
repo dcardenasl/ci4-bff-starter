@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.3] — 2026-08-06
+
+### Changed
+
+- **`dcardenasl/ci4-api-core`** `^1.0` → `^1.2` — dependency floor raise to stay aligned with the rest of the platform's LOC-008 release cascade. No behavior change: the BFF has no database and does not consume core's content-localization runtime.
+
 ## [1.6.2] — 2026-07-24
 
 ### Security
